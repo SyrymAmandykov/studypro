@@ -14,7 +14,6 @@ import com.sp.studypro.repository.UniversitiesRepository;
 import com.sp.studypro.service.UniversitiesService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -76,26 +75,55 @@ public class UniversitiesServiceImpl implements UniversitiesService {
 
     @Override
     public List<UniversitiesDto> getAllUniversityByCountries(String countries) {
-        CountriesModel countriesModel = countriesRepository.findByCountries(countries);
-
-        ArrayList<CountriesModel> countriesModels = new ArrayList<>();
-        countriesModels.add(countriesModel);
-
-        return  universitiesMapper.toUniversitiesDto(countriesModel);
+        List<UniversitiesModel> universitiesModels = universitiesRepository.findAllByCountriesCountries(countries);
+        return universitiesModels.stream()
+                .map(universitiesMapper::toUniversitiesDto)
+                .toList();
     }
 
     @Override
-    public UniversitiesDto getUniversityByProgramName(List<String> programName) {
-        return null;
+    public List<UniversitiesDto> getAllUniversityByProgramName(String programName) {
+        List<UniversitiesModel> universitiesModels = universitiesRepository.findAllByPrograms(programName);
+        return universitiesModels.stream()
+                .map(universitiesMapper::toUniversitiesDto)
+                .toList();
     }
 
     @Override
-    public UniversitiesDto updateUniversities(Long id, String name, String description, Double price, Integer countOfStudents, List<Long> programIds, List<Long> subjectIds, Long countryIds, Intake intake) {
-        return null;
+    public UniversitiesDto updateUniversities(Long id, String name, String description, Double price, Integer countOfStudents,
+                                              List<Long> programIds, List<Long> subjectIds, Long countryIds, Intake intake) {
+// в дальнейшем все заменю на Optional + Exception
+        UniversitiesModel updateUniversitiesModel = universitiesRepository.getReferenceById(id);
+        if (updateUniversitiesModel.getId() == null) {
+            throw new IllegalArgumentException("University id not found");
+        }
+        List<ProgramsModel> updateProgramModel = programsRepository.findAllByIdIn(programIds);
+        if (updateProgramModel == null) {
+            throw new IllegalArgumentException("Programs not found");
+        }
+        List<SubjectsModel> updateSubjectsModel = subjectsRepository.findAllByIdIn(subjectIds);
+        if (updateSubjectsModel == null) {
+            throw new IllegalArgumentException("Subjects id not found");
+        }
+        CountriesModel updateCountriesModel = countriesRepository.findById(countryIds)
+                .orElseThrow();
+
+        updateUniversitiesModel.setId(id);
+        updateUniversitiesModel.setName(name);
+        updateUniversitiesModel.setDescription(description);
+        updateUniversitiesModel.setPrice(price);
+        updateUniversitiesModel.setCountOfStudents(countOfStudents);
+        updateUniversitiesModel.setProgramsModelList(updateProgramModel);
+        updateUniversitiesModel.setCountries(updateCountriesModel);
+        updateUniversitiesModel.setSubjectsModelList(updateSubjectsModel);
+        updateUniversitiesModel.setIntake(intake);
+
+        return universitiesMapper.toUniversitiesDto(updateUniversitiesModel);
     }
 
     @Override
     public void deleteUniversitiesById(Long id) {
+        universitiesRepository.deleteById(id);
 
     }
 }

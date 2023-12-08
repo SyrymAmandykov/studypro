@@ -9,4 +9,5 @@ public interface UsersRepository extends JpaRepository<UsersModel,Long> {
 
     UsersModel findFirstByEmailAndPassword(String email, String password);
 
+
 }
