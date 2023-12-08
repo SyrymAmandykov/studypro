@@ -1,0 +1,13 @@
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/studypro
+    username: postgres
+    password: your_password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 1994
