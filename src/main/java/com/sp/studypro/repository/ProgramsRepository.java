@@ -10,4 +10,6 @@ import java.util.List;
 public interface ProgramsRepository extends JpaRepository<ProgramsModel,Long> {
 
     List<ProgramsModel> findAllByIdIn(List<Long> ids);
+    List<ProgramsModel> findAllByUnderGraduate(String underGraduate);
+    List<ProgramsModel> findAllByPostGraduate(String postGraduate);
 }

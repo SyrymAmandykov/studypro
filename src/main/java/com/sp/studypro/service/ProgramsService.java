@@ -9,7 +9,8 @@ public interface ProgramsService {
     ProgramsDto addNewPrograms(String underGraduate,String postGraduate);
     ProgramsDto addNewUnderGraduate(String underGraduate);
     ProgramsDto addNewPostGraduate(String postGraduate);
-
+    List<ProgramsDto> getProgramByUnderGraduate(String underGraduate);
+    List<ProgramsDto>  getProgramByPostGraduate(String postGraduate);
     List<ProgramsDto> getAllPrograms();
 
     ProgramsDto getProgramsById(Long id);

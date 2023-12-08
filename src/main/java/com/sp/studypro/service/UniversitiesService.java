@@ -13,7 +13,7 @@ public interface UniversitiesService {
     List<UniversitiesDto> getAllUniversities();
     UniversitiesDto getUniversityById(Long id);
     List<UniversitiesDto> getAllUniversityByCountries(String countries);
-    UniversitiesDto getUniversityByProgramName(List<String> programName);
+    List<UniversitiesDto> getAllUniversityByProgramName(String programName);
 
     UniversitiesDto updateUniversities(Long id, String name, String description, Double price, Integer countOfStudents,
                                        List<Long> programIds, List<Long> subjectIds, Long countryIds, Intake intake);
