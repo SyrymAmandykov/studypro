@@ -14,11 +14,11 @@ import lombok.Setter;
 @Setter
 public class UsersDto implements BaseDto {
 
-    private Long id;
     private String email;
     private String password;
     private String fullName;
     private Integer age;
     private Role role;
     private Gender gender;
+
 }

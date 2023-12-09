@@ -1,9 +1,12 @@
 package com.sp.studypro.service.impl;
 
+import com.sp.studypro.enum_package.ProgramType;
 import com.sp.studypro.mapper.ProgramsMapper;
 import com.sp.studypro.mapper.dto.ProgramsDto;
 import com.sp.studypro.model.ProgramsModel;
+import com.sp.studypro.model.SubjectsModel;
 import com.sp.studypro.repository.ProgramsRepository;
+import com.sp.studypro.repository.SubjectsRepository;
 import com.sp.studypro.service.ProgramsService;
 import org.springframework.stereotype.Service;
 
@@ -14,42 +17,26 @@ public class ProgramsServiceImpl implements ProgramsService {
 
     private final ProgramsRepository programsRepository;
     private final ProgramsMapper programsMapper;
+    private final SubjectsRepository subjectsRepository;
 
-    public ProgramsServiceImpl(ProgramsRepository programsRepository, ProgramsMapper programsMapper) {
+    public ProgramsServiceImpl(ProgramsRepository programsRepository, ProgramsMapper programsMapper, SubjectsRepository subjectsRepository) {
         this.programsRepository = programsRepository;
         this.programsMapper = programsMapper;
+        this.subjectsRepository = subjectsRepository;
     }
 
     @Override
-    public ProgramsDto addNewPrograms(String underGraduate, String postGraduate) {
+    public ProgramsDto addNewPrograms(String title, String description, Double price,
+                                      ProgramType programType, List<Long> subjectsIds) {
+        List<SubjectsModel> subjectsModels = subjectsRepository.findAllByIdIn(subjectsIds);
+
         ProgramsModel programsModel = programsRepository.save(
                 new ProgramsModel(
-                        underGraduate,
-                        postGraduate
-                )
-        );
-
-        return programsMapper.toProgramsDto(programsModel);
-    }
-
-    @Override
-    public ProgramsDto addNewUnderGraduate(String underGraduate) {
-        ProgramsModel programsModel = programsRepository.save(
-                new ProgramsModel(
-                        underGraduate,
-                        null
-                )
-        );
-
-        return programsMapper.toProgramsDto(programsModel);
-    }
-
-    @Override
-    public ProgramsDto addNewPostGraduate(String postGraduate) {
-        ProgramsModel programsModel = programsRepository.save(
-                new ProgramsModel(
-                        null,
-                        postGraduate
+                        title,
+                        description,
+                        price,
+                        programType,
+                        subjectsModels
                 )
         );
 
@@ -72,30 +59,41 @@ public class ProgramsServiceImpl implements ProgramsService {
     }
 
     @Override
-    public List<ProgramsDto> getProgramByUnderGraduate(String underGraduate) {
-        List<ProgramsModel> programsModel = programsRepository.findAllByUnderGraduate(underGraduate);
+    public List<ProgramsDto> getAllProgramsByProgramType(ProgramType programType) {
+        List<ProgramsModel> programsModel = programsRepository.findAllByProgramType(programType);
         return programsModel.stream()
                 .map(programsMapper::toProgramsDto)
                 .toList();
     }
 
     @Override
-    public List<ProgramsDto>  getProgramByPostGraduate(String postGraduate) {
-        List<ProgramsModel> programsModel = programsRepository.findAllByPostGraduate(postGraduate);
-        return programsModel.stream()
+    public List<ProgramsDto> getAllProgramsBySubjectsName(String name) {
+        List<ProgramsModel> programsModels = programsRepository.findAllBySubjectsModelName(name);
+        return programsModels.stream()
                 .map(programsMapper::toProgramsDto)
                 .toList();
     }
 
     @Override
-    public ProgramsDto updateProgram(Long id, String underGraduate, String postGraduate) {
+    public ProgramsDto updateProgram(Long id,String title, String description, Double price,
+                                     ProgramType programType, List<Long> subjectsIds) {
         ProgramsModel upgradeProgramsModels = programsRepository.findById(id)
                 .orElseThrow();
+        List<SubjectsModel> upgradeSubjectsModels = subjectsRepository.findAllByIdIn(subjectsIds);
+        if (upgradeSubjectsModels.isEmpty()) {
+            throw new IllegalArgumentException("Subjects id not found");
+        }
 
         upgradeProgramsModels.setId(id);
-        upgradeProgramsModels.setUnderGraduate(underGraduate);
-        upgradeProgramsModels.setPostGraduate(postGraduate);
+        upgradeProgramsModels.setTitle(title);
+        upgradeProgramsModels.setDescription(description);
+        upgradeProgramsModels.setPrice(price);
+        upgradeProgramsModels.setProgramType(programType);
+        upgradeProgramsModels.setSubjectsModel(upgradeSubjectsModels);
 
+        programsRepository.save(
+                upgradeProgramsModels
+        );
 
         return programsMapper.toProgramsDto(upgradeProgramsModels);
     }

@@ -56,6 +56,10 @@ public class SubjectsServiceImpl implements SubjectsService {
         updateSubjectsModel.setId(id);
         updateSubjectsModel.setName(name);
 
+        subjectsRepository.save(
+                updateSubjectsModel
+        );
+
         return subjectsMapper.toSubjectsDto(updateSubjectsModel);
     }
 

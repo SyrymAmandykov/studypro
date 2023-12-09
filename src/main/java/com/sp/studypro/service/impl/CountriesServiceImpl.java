@@ -54,6 +54,10 @@ public class CountriesServiceImpl implements CountriesService {
         updateCountriesModel.setId(id);
         updateCountriesModel.setCountries(countries);
 
+        countriesRepository.save(
+                updateCountriesModel
+        );
+
         return countriesMapper.toCountriesDto(updateCountriesModel);
     }
 

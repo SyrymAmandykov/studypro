@@ -5,7 +5,7 @@ import com.sp.studypro.model.ProgramsModel;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring",injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(componentModel = "spring",injectionStrategy = InjectionStrategy.CONSTRUCTOR,uses = {SubjectsMapper.class})
 public interface ProgramsMapper {
 
     ProgramsDto toProgramsDto(ProgramsModel programsModel);

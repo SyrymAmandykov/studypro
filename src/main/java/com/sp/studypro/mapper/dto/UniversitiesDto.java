@@ -20,12 +20,11 @@ import java.util.List;
 @Setter
 public class UniversitiesDto implements BaseDto {
 
+    private Long id;
     private String name;
     private String description;
-    private Double price;
-    private Integer countOfStudents;
-    private List<ProgramsModel> programsModelList;
-    private List<SubjectsModel> subjectsModelList;
-    private CountriesModel countries;
+    private Integer totalClients;
+    private List<ProgramsDto> programsModelList;
+    private CountriesDto countries;
     private Intake intake;
 }

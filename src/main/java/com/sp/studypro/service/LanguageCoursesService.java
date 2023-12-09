@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface LanguageCoursesService {
 
-    LanguageCoursesDto addNewCourse(String name, String description, Double price, Long countryId, Intake intake,Integer countOfStudents);
+    LanguageCoursesDto addNewCourse(String name, String description, Double price, Long countryId, Intake intake,Integer totalClients);
     LanguageCoursesDto getCoursesById(Long id);
     List<LanguageCoursesDto> getAllCoursesByIntake(Intake intake);
     List<LanguageCoursesDto> getCoursesByCountryId(Long countryId);
     List<LanguageCoursesDto> getCoursesByPrice(Double price);
     List<LanguageCoursesDto> getAllCourses();
-    LanguageCoursesDto updateCourses(Long id,String name,String description, Double price, Long countryId, Intake intake,Integer countOfStudents);
+    LanguageCoursesDto updateCourses(Long id,String name,String description, Double price, Long countryId, Intake intake,Integer totalClients);
     void deleteCoursesById(Long id);
 
 }

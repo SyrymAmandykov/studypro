@@ -9,7 +9,6 @@ import com.sp.studypro.repository.UsersRepository;
 import com.sp.studypro.service.UsersService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -23,15 +22,16 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UsersDto addNewUser(String email, String password, String fullName, Integer age,Gender gender) {
+    public UsersDto addNewUser(String email, String password, String fullName, Integer age,Gender gender,Role role) {
+
         UsersModel usersModel = usersRepository.save(
                 new UsersModel(
                         email,
                         password,
                         fullName,
                         age,
-                        null,
-                        null
+                        role,
+                        gender
                 )
         );
 
@@ -55,13 +55,17 @@ public class UsersServiceImpl implements UsersService {
 
 
     @Override
-    public UsersDto getUserByEmailAndPassword(String email, String password) {
-        UsersModel usersModel = usersRepository.findFirstByEmailAndPassword(email,password);
+    public UsersDto getUserByEmail(String email) {
+        UsersModel usersModel = usersRepository.findByEmail(email);
+        if(usersModel.getEmail().isEmpty()){
+            throw new IllegalArgumentException("User email not found");
+        }
         return userMapper.toUsersDto(usersModel);
     }
 
     @Override
-    public UsersDto updateUser(Long id, String email, String password, String fullName, Integer age,Role role,Gender gender) {
+    public UsersDto updateUser(Long id, String email, String password, String fullName, Integer age,
+                               Role role,Gender gender) {
         UsersModel updatedUsersModel = usersRepository
                 .findById(id)
                 .orElseThrow();
@@ -78,6 +82,9 @@ public class UsersServiceImpl implements UsersService {
         updatedUsersModel.setRole(role);
         updatedUsersModel.setGender(gender);
 
+        usersRepository.save(
+                updatedUsersModel
+        );
         return userMapper.toUsersDto(updatedUsersModel);
 
     }

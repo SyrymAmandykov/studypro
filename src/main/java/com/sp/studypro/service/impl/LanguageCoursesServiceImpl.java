@@ -27,7 +27,7 @@ public class LanguageCoursesServiceImpl implements LanguageCoursesService {
 
     @Override
     public LanguageCoursesDto addNewCourse(String name, String description, Double price,
-                                           Long countryId, Intake intake, Integer countOfStudents) {
+                                           Long countryId, Intake intake, Integer totalClients) {
         CountriesModel countriesModel = countriesRepository.findById(countryId)
                 .orElseThrow();
 
@@ -36,7 +36,7 @@ public class LanguageCoursesServiceImpl implements LanguageCoursesService {
                         name,
                         description,
                         price,
-                        countOfStudents,
+                        totalClients,
                         countriesModel,
                         intake
                 )
@@ -84,7 +84,7 @@ public class LanguageCoursesServiceImpl implements LanguageCoursesService {
     }
 
     @Override
-    public LanguageCoursesDto updateCourses(Long id,String name, String description, Double price, Long countryId, Intake intake, Integer countOfStudents) {
+    public LanguageCoursesDto updateCourses(Long id,String name, String description, Double price, Long countryId, Intake intake, Integer totalClients) {
 
         LanguageCoursesModel updateLanguageCoursesModel = languageCoursesRepository.getReferenceById(id);
         if (updateLanguageCoursesModel.getId() == null){
@@ -99,7 +99,11 @@ public class LanguageCoursesServiceImpl implements LanguageCoursesService {
         updateLanguageCoursesModel.setPrice(price);
         updateLanguageCoursesModel.setCountries(updateCountriesModel);
         updateLanguageCoursesModel.setIntake(intake);
-        updateLanguageCoursesModel.setCountOfStudents(countOfStudents);
+        updateLanguageCoursesModel.setTotalClients(totalClients);
+
+        languageCoursesRepository.save(
+                updateLanguageCoursesModel
+        );
 
         return languageCoursesMapper.languageCoursesDto(updateLanguageCoursesModel);
     }

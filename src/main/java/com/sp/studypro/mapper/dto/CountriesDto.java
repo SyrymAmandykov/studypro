@@ -11,5 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CountriesDto implements BaseDto {
+
+    private Long id;
     private String countries;
 }

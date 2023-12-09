@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Table(name = "LanguageCourses")
 @Getter
@@ -27,8 +25,8 @@ public class LanguageCoursesModel extends BaseModel {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "countOfStudents", nullable = false)
-    private Integer countOfStudents;
+    @Column(name = "total_clients", nullable = false)
+    private Integer totalClients;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private CountriesModel countries;

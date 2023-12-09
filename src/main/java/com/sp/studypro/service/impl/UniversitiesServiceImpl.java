@@ -1,15 +1,14 @@
 package com.sp.studypro.service.impl;
 
 import com.sp.studypro.enum_package.Intake;
+import com.sp.studypro.enum_package.ProgramType;
 import com.sp.studypro.mapper.UniversitiesMapper;
 import com.sp.studypro.mapper.dto.UniversitiesDto;
 import com.sp.studypro.model.CountriesModel;
 import com.sp.studypro.model.ProgramsModel;
-import com.sp.studypro.model.SubjectsModel;
 import com.sp.studypro.model.UniversitiesModel;
 import com.sp.studypro.repository.CountriesRepository;
 import com.sp.studypro.repository.ProgramsRepository;
-import com.sp.studypro.repository.SubjectsRepository;
 import com.sp.studypro.repository.UniversitiesRepository;
 import com.sp.studypro.service.UniversitiesService;
 import org.springframework.stereotype.Service;
@@ -21,24 +20,21 @@ public class UniversitiesServiceImpl implements UniversitiesService {
 
     private final UniversitiesRepository universitiesRepository;
     private final ProgramsRepository programsRepository;
-    private final SubjectsRepository subjectsRepository;
     private final CountriesRepository countriesRepository;
     private final UniversitiesMapper universitiesMapper;
 
-    public UniversitiesServiceImpl(UniversitiesRepository universitiesRepository, ProgramsRepository programsRepository, SubjectsRepository subjectsRepository, CountriesRepository countriesRepository, UniversitiesMapper universitiesMapper) {
+    public UniversitiesServiceImpl(UniversitiesRepository universitiesRepository, ProgramsRepository programsRepository, CountriesRepository countriesRepository, UniversitiesMapper universitiesMapper) {
         this.universitiesRepository = universitiesRepository;
         this.programsRepository = programsRepository;
-        this.subjectsRepository = subjectsRepository;
         this.countriesRepository = countriesRepository;
         this.universitiesMapper = universitiesMapper;
     }
 
     @Override
-    public UniversitiesDto addNewUniversity(String name, String description, Double price,
-                                            List<Long> programIds, List<Long> subjectIds, Long countryIds, Intake intake) {
+    public UniversitiesDto addNewUniversity(String name, String description,Integer totalClients,
+                                            List<Long> programsIds, Long countryIds, Intake intake) {
 
-        List<ProgramsModel> programsModel = programsRepository.findAllByIdIn(programIds);
-        List<SubjectsModel> subjectsModel = subjectsRepository.findAllByIdIn(subjectIds);
+        List<ProgramsModel> programsModel = programsRepository.findAllByIdIn(programsIds);
         CountriesModel countriesModel = countriesRepository.findById(countryIds)
                 .orElseThrow();
 
@@ -46,12 +42,10 @@ public class UniversitiesServiceImpl implements UniversitiesService {
                 new UniversitiesModel(
                         name,
                         description,
-                        price,
-                        null,
+                        totalClients,
                         programsModel,
-                        subjectsModel,
                         countriesModel,
-                        null
+                        intake
                 )
         );
 
@@ -82,16 +76,16 @@ public class UniversitiesServiceImpl implements UniversitiesService {
     }
 
     @Override
-    public List<UniversitiesDto> getAllUniversityByProgramName(String programName) {
-        List<UniversitiesModel> universitiesModels = universitiesRepository.findAllByPrograms(programName);
+    public List<UniversitiesDto> getAllUniversityByProgramType(ProgramType programType) {
+        List<UniversitiesModel> universitiesModels = universitiesRepository.findAllByProgramsType(programType);
         return universitiesModels.stream()
                 .map(universitiesMapper::toUniversitiesDto)
                 .toList();
     }
 
     @Override
-    public UniversitiesDto updateUniversities(Long id, String name, String description, Double price, Integer countOfStudents,
-                                              List<Long> programIds, List<Long> subjectIds, Long countryIds, Intake intake) {
+    public UniversitiesDto updateUniversities(Long id, String name, String description,Integer totalClients,
+                                              List<Long> programIds, Long countryIds, Intake intake) {
 // в дальнейшем все заменю на Optional + Exception
         UniversitiesModel updateUniversitiesModel = universitiesRepository.getReferenceById(id);
         if (updateUniversitiesModel.getId() == null) {
@@ -101,22 +95,20 @@ public class UniversitiesServiceImpl implements UniversitiesService {
         if (updateProgramModel == null) {
             throw new IllegalArgumentException("Programs not found");
         }
-        List<SubjectsModel> updateSubjectsModel = subjectsRepository.findAllByIdIn(subjectIds);
-        if (updateSubjectsModel == null) {
-            throw new IllegalArgumentException("Subjects id not found");
-        }
         CountriesModel updateCountriesModel = countriesRepository.findById(countryIds)
                 .orElseThrow();
 
         updateUniversitiesModel.setId(id);
         updateUniversitiesModel.setName(name);
         updateUniversitiesModel.setDescription(description);
-        updateUniversitiesModel.setPrice(price);
-        updateUniversitiesModel.setCountOfStudents(countOfStudents);
+        updateUniversitiesModel.setTotalClients(totalClients);
         updateUniversitiesModel.setProgramsModelList(updateProgramModel);
         updateUniversitiesModel.setCountries(updateCountriesModel);
-        updateUniversitiesModel.setSubjectsModelList(updateSubjectsModel);
         updateUniversitiesModel.setIntake(intake);
+
+        universitiesRepository.save(
+                updateUniversitiesModel
+        );
 
         return universitiesMapper.toUniversitiesDto(updateUniversitiesModel);
     }

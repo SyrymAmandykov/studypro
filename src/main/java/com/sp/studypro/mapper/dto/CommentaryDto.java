@@ -15,9 +15,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CommentaryDto implements BaseDto {
 
+    private Long id;
     private String title;
     private String text;
-    private UniversitiesModel universitiesModel;
-    private LanguageCoursesModel languageCoursesModel;
-    private UsersModel usersModel;
+    private UniversitiesDto universitiesDto;
+    private LanguageCoursesDto languageCoursesDto;
+    private UsersDto usersDto;
 }

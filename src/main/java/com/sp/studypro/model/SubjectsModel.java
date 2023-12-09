@@ -16,4 +16,5 @@ public class SubjectsModel extends BaseModel {
 
     @Column(name = "subjects", nullable = false)
     private String name;
+
 }

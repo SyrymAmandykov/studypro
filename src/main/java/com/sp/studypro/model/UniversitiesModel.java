@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "universities")
@@ -22,17 +21,12 @@ public class UniversitiesModel extends BaseModel {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "price", nullable = false)
-    private Double price;
+    @Column(name = "total_clients", nullable = false)
+    private Integer totalClients;
 
-    @Column(name = "countOfStudents", nullable = false)
-    private Integer countOfStudents;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<ProgramsModel> programsModelList;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<SubjectsModel> subjectsModelList;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private CountriesModel countries;

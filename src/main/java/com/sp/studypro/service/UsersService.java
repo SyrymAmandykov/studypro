@@ -4,11 +4,12 @@ import com.sp.studypro.enum_package.Gender;
 import com.sp.studypro.enum_package.Role;
 import com.sp.studypro.mapper.dto.UsersDto;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 public interface UsersService {
 
-    UsersDto addNewUser(String email, String password, String fullName, Integer age,Gender gender);
+    UsersDto addNewUser(String email, String password, String fullName, Integer age,Gender gender,Role role);
 
     List<UsersDto> getAllUsers();
 
@@ -19,6 +20,6 @@ public interface UsersService {
 
     void deleteUserById(Long id);
 
-    UsersDto getUserByEmailAndPassword(String email, String password);
+    UsersDto getUserByEmail(String email);
 
 }

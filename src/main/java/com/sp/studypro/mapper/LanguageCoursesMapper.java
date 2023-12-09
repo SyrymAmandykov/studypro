@@ -5,7 +5,7 @@ import com.sp.studypro.model.LanguageCoursesModel;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring",injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(componentModel = "spring",injectionStrategy = InjectionStrategy.CONSTRUCTOR,uses = {CountriesMapper.class})
 public interface LanguageCoursesMapper {
 
     LanguageCoursesDto languageCoursesDto(LanguageCoursesModel languageCoursesModel);

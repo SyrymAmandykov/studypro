@@ -12,5 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SubjectsDto implements BaseDto {
 
+    private Long id;
     private String name;
 }

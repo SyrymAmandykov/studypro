@@ -17,10 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 public class LanguageCoursesDto implements BaseDto {
 
+    private Long id;
     private String name;
     private String description;
     private Double price;
-    private Integer countOfStudents;
-    private CountriesModel countries;
+    private Integer totalClients;
+    private CountriesDto countries;
     private Intake intake;
 }

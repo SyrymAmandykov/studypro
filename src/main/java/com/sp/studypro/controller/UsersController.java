@@ -29,15 +29,34 @@ public class UsersController {
                 addUsersRequest.getPassword(),
                 addUsersRequest.getFullName(),
                 addUsersRequest.getAge(),
-                addUsersRequest.getGender()
+                addUsersRequest.getGender(),
+                addUsersRequest.getRole()
         );
     }
 
-    @GetMapping("/users")
+    @GetMapping("/usersList")
     @ResponseBody
     public GetAllUsersResponse getAllUsers(){
         List<UsersDto> users = usersService.getAllUsers();
         return new GetAllUsersResponse(users);
+    }
+
+    @GetMapping("/users/{userId}")
+    @ResponseBody
+    public UsersDto getUserById(
+            @PathVariable Long userId
+    ) {
+        return usersService.getUserById(userId);
+    }
+
+    @GetMapping("/users/by-email/{email}")
+    @ResponseBody
+    public UsersDto getUserByEmail(
+            @PathVariable String email
+    ){
+
+        return usersService.getUserByEmail(email);
+
     }
 
     @PutMapping("/users")
@@ -65,6 +84,8 @@ public class UsersController {
     ){
         usersService.deleteUserById(id);
     }
+
+
 
 
 
