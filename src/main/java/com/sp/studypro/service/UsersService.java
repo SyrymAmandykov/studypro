@@ -3,8 +3,9 @@ package com.sp.studypro.service;
 import com.sp.studypro.enum_package.Gender;
 import com.sp.studypro.enum_package.Role;
 import com.sp.studypro.mapper.dto.UsersDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 public interface UsersService {
@@ -16,10 +17,11 @@ public interface UsersService {
     /*Для отображеня данных профиля*/
     UsersDto getUserById(Long id);
 
-    UsersDto updateUser(Long id, String email, String password, String fullName, Integer age, Role role,Gender gender);
+    UsersDto updateUsers(Long id, String email, String password, String fullName, Integer age, Role role,Gender gender);
 
     void deleteUserById(Long id);
 
     UsersDto getUserByEmail(String email);
+//    Page<UsersDto> getAllUsers(Pageable pageable);
 
 }

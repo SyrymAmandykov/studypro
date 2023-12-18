@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface ProgramsService {
 
-    ProgramsDto addNewPrograms(String title, String description, Double price, ProgramType programType, List<Long> subjectsIds);
+    ProgramsDto addNewPrograms(String title, String description, Double price, ProgramType programType, List<SubjectsDto> subjects);
     List<ProgramsDto> getAllProgramsByProgramType(ProgramType programType);
     List<ProgramsDto> getAllPrograms();
     ProgramsDto getProgramsById(Long id);
     List<ProgramsDto> getAllProgramsBySubjectsName(String name);
     ProgramsDto updateProgram(Long id,String title, String description, Double price,
-                              ProgramType programType, List<Long> subjectsIds);
+                              ProgramType programType, List<SubjectsDto> subjects);
     void deleteProgramsById(Long id);
 
 }

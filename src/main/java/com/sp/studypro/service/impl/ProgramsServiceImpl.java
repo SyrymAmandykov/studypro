@@ -3,6 +3,7 @@ package com.sp.studypro.service.impl;
 import com.sp.studypro.enum_package.ProgramType;
 import com.sp.studypro.mapper.ProgramsMapper;
 import com.sp.studypro.mapper.dto.ProgramsDto;
+import com.sp.studypro.mapper.dto.SubjectsDto;
 import com.sp.studypro.model.ProgramsModel;
 import com.sp.studypro.model.SubjectsModel;
 import com.sp.studypro.repository.ProgramsRepository;
@@ -27,8 +28,8 @@ public class ProgramsServiceImpl implements ProgramsService {
 
     @Override
     public ProgramsDto addNewPrograms(String title, String description, Double price,
-                                      ProgramType programType, List<Long> subjectsIds) {
-        List<SubjectsModel> subjectsModels = subjectsRepository.findAllByIdIn(subjectsIds);
+                                      ProgramType programType, List<SubjectsDto> subjects) {
+        List<SubjectsModel> subjectsModels = subjectsRepository.findAllBySubjects(subjects);
 
         ProgramsModel programsModel = programsRepository.save(
                 new ProgramsModel(
@@ -76,10 +77,10 @@ public class ProgramsServiceImpl implements ProgramsService {
 
     @Override
     public ProgramsDto updateProgram(Long id,String title, String description, Double price,
-                                     ProgramType programType, List<Long> subjectsIds) {
+                                     ProgramType programType, List<SubjectsDto> subjects) {
         ProgramsModel upgradeProgramsModels = programsRepository.findById(id)
                 .orElseThrow();
-        List<SubjectsModel> upgradeSubjectsModels = subjectsRepository.findAllByIdIn(subjectsIds);
+        List<SubjectsModel> upgradeSubjectsModels = subjectsRepository.findAllBySubjects(subjects);
         if (upgradeSubjectsModels.isEmpty()) {
             throw new IllegalArgumentException("Subjects id not found");
         }

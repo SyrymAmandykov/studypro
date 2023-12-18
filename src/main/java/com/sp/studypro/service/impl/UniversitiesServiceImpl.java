@@ -1,8 +1,11 @@
 package com.sp.studypro.service.impl;
 
+import com.sp.studypro.controller.universities.AddUniversitiesRequest;
 import com.sp.studypro.enum_package.Intake;
 import com.sp.studypro.enum_package.ProgramType;
 import com.sp.studypro.mapper.UniversitiesMapper;
+import com.sp.studypro.mapper.dto.CountriesDto;
+import com.sp.studypro.mapper.dto.ProgramsDto;
 import com.sp.studypro.mapper.dto.UniversitiesDto;
 import com.sp.studypro.model.CountriesModel;
 import com.sp.studypro.model.ProgramsModel;
@@ -31,7 +34,7 @@ public class UniversitiesServiceImpl implements UniversitiesService {
     }
 
     @Override
-    public UniversitiesDto addNewUniversity(String name, String description,Integer totalClients,
+    public UniversitiesDto addNewUniversity(String name, String description, Integer totalClients,
                                             List<Long> programsIds, Long countryIds, Intake intake) {
 
         List<ProgramsModel> programsModel = programsRepository.findAllByIdIn(programsIds);
@@ -53,6 +56,14 @@ public class UniversitiesServiceImpl implements UniversitiesService {
     }
 
     @Override
+    public UniversitiesDto addNewUniversity(AddUniversitiesRequest addUniversitiesRequest) {
+
+        UniversitiesModel universitiesModel = universitiesMapper.toUniversitiesModel(addUniversitiesRequest);
+        UniversitiesModel saveUniversity = universitiesRepository.save(universitiesModel);
+        return universitiesMapper.toUniversitiesDto(saveUniversity);
+    }
+
+    @Override
     public List<UniversitiesDto> getAllUniversities() {
         List<UniversitiesModel> universitiesModels = universitiesRepository.findAll();
         return universitiesModels.stream()
@@ -68,8 +79,8 @@ public class UniversitiesServiceImpl implements UniversitiesService {
     }
 
     @Override
-    public List<UniversitiesDto> getAllUniversityByCountries(String countries) {
-        List<UniversitiesModel> universitiesModels = universitiesRepository.findAllByCountriesCountries(countries);
+    public List<UniversitiesDto> getAllUniversityByCountries(String countryName) {
+        List<UniversitiesModel> universitiesModels = universitiesRepository.findAllByCountriesCountries(countryName);
         return universitiesModels.stream()
                 .map(universitiesMapper::toUniversitiesDto)
                 .toList();

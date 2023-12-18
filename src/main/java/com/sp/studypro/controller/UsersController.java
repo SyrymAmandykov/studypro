@@ -5,12 +5,15 @@ import com.sp.studypro.controller.users.GetAllUsersResponse;
 import com.sp.studypro.controller.users.UpdateUsersRequest;
 import com.sp.studypro.mapper.dto.UsersDto;
 import com.sp.studypro.service.UsersService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
 public class UsersController {
 
     private final UsersService usersService;
@@ -19,7 +22,7 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    @PostMapping("/users")
+    @PostMapping("/users/add")
     @ResponseBody
     public UsersDto addNewUser(
             @RequestBody AddUsersRequest addUsersRequest
@@ -34,7 +37,7 @@ public class UsersController {
         );
     }
 
-    @GetMapping("/usersList")
+    @GetMapping("/users/all")
     @ResponseBody
     public GetAllUsersResponse getAllUsers(){
         List<UsersDto> users = usersService.getAllUsers();
@@ -49,22 +52,22 @@ public class UsersController {
         return usersService.getUserById(userId);
     }
 
-    @GetMapping("/users/by-email/{email}")
+    @GetMapping("/users/{userEmail}")
     @ResponseBody
     public UsersDto getUserByEmail(
-            @PathVariable String email
+            @PathVariable String userEmail
     ){
 
-        return usersService.getUserByEmail(email);
+        return usersService.getUserByEmail(userEmail);
 
     }
 
-    @PutMapping("/users")
+    @PutMapping("/users/update")
     @ResponseBody
     public UsersDto updateUser(
             @RequestBody UpdateUsersRequest updateUsersRequest
             ) {
-        usersService.updateUser(
+        usersService.updateUsers(
                 updateUsersRequest.getId(),
                 updateUsersRequest.getEmail(),
                 updateUsersRequest.getPassword(),
@@ -77,13 +80,21 @@ public class UsersController {
         return usersService.getUserById(updateUsersRequest.getId());
     }
 
-    @DeleteMapping("/users")
+    @DeleteMapping("/users/delete/{userId}")
     @ResponseBody
     public void deleteUser(
-            @RequestParam Long id
+            @PathVariable Long userId
     ){
-        usersService.deleteUserById(id);
+        usersService.deleteUserById(userId);
     }
+
+
+//    @GetMapping("/userList")
+//    public Page<UsersDto> getUsers(@RequestParam(defaultValue = "0") int page,
+//                                   @RequestParam(defaultValue = "5") int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return usersService.getAllUsers(pageable);
+//    }
 
 
 

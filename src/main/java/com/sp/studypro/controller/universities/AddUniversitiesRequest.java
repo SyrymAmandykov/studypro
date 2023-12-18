@@ -18,9 +18,8 @@ public class AddUniversitiesRequest {
 
     private String name;
     private String description;
-    private Double price;
     private Integer totalClients;
-    private List<ProgramsDto> programsModelList;
-    private CountriesDto countries;
+    private List<Long> programsId;
+    private Long countriesId;
     private Intake intake;
 }
