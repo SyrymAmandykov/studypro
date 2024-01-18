@@ -30,7 +30,7 @@ public class ProgramsController {
                 addProgramsRequest.getDescription(),
                 addProgramsRequest.getPrice(),
                 addProgramsRequest.getProgramType(),
-                addProgramsRequest.getSubjects()
+                addProgramsRequest.getSubjectsModel()
         );
     }
 
@@ -77,7 +77,7 @@ public class ProgramsController {
                 programs.getDescription(),
                 programs.getPrice(),
                 programs.getProgramType(),
-                programs.getSubjects()
+                programs.getSubjectsModel()
         );
 
         return programsService.getProgramsById(programs.getId());

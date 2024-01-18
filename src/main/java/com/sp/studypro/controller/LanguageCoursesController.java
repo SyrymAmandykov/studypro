@@ -34,38 +34,40 @@ public class LanguageCoursesController {
                 center.getIntake(),
                 center.getTotalClients()
         );
+
     }
 
-    @GetMapping("/by-id/{centerId}")
+    @GetMapping(value = "/by-id/{languageCenterId}")
     @ResponseBody
     public LanguageCoursesDto getCenterById(
-            @PathVariable Long centerId
+            @PathVariable Long languageCenterId
     ){
-        return languageCoursesService.getCoursesById(centerId);
+        return languageCoursesService.getCoursesById(languageCenterId);
     }
 
-    @GetMapping("/by-intakeName")
+    @GetMapping("/by-countryId/{countryId}")
+    @ResponseBody
+    public List<LanguageCoursesDto> getCentersListByCountriesId(
+            @PathVariable Long countryId
+    ){
+        return languageCoursesService.getCoursesByCountryId(countryId);
+    }
+
+    @GetMapping("/by-intakeName/{intakeName}")
     @ResponseBody
     public List<LanguageCoursesDto> getAllCenterByIntake(
-            @RequestBody Intake intake
+            @PathVariable Intake intakeName
             ){
-        return languageCoursesService.getAllCoursesByIntake(intake);
+        return languageCoursesService.getAllCoursesByIntake(intakeName);
     }
 
-    @GetMapping("/by-centerId/{centerId}")
-    @ResponseBody
-    public GetAllLanguageCentersResponse getCentersListByCountriesId(
-            @PathVariable Long centerId
-    ){
-        return (GetAllLanguageCentersResponse) languageCoursesService.getCoursesByCountryId(centerId);
-    }
 
-    @GetMapping("/by-price")
+    @GetMapping("/by-price/{price}")
     @ResponseBody
-    public GetAllLanguageCentersResponse getAllCentersByPrice(
-            @RequestBody Double price
+    public List<LanguageCoursesDto> getAllCentersByPrice(
+            @PathVariable Double price
     ){
-        return (GetAllLanguageCentersResponse) languageCoursesService.getCoursesByPrice(price);
+        return languageCoursesService.getCoursesByPrice(price);
     }
 
     @GetMapping("/allCenters")

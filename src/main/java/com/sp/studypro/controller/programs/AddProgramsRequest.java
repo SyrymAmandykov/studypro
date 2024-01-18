@@ -19,5 +19,5 @@ public class AddProgramsRequest {
     private String description;
     private Double price;
     private ProgramType programType;
-    private List<SubjectsDto> subjects;
+    private List<SubjectsDto> subjectsModel;
 }

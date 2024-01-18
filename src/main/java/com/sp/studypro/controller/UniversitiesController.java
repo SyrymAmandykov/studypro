@@ -64,7 +64,7 @@ public class UniversitiesController {
 
     @GetMapping("/by-programType")
     @ResponseBody
-    public GetAllUniversitiesResponse getAlluniversitiesByProgramType(
+    public GetAllUniversitiesResponse getAllUniversitiesByProgramType(
             @RequestBody ProgramType programType
             ){
         return (GetAllUniversitiesResponse) universitiesService.getAllUniversityByProgramType(programType);

@@ -16,6 +16,5 @@ public interface SubjectsRepository extends JpaRepository<SubjectsModel,Long> {
 
     List<SubjectsModel> findAllByIdIn(List<Long> ids);
 
-    @Query("SELECT DISTINCT a FROM SubjectsModel a JOIN a.name b WHERE b IN :subjects")
-    List<SubjectsModel> findAllBySubjects(@Param("subjects")List<SubjectsDto> subjects);
+    List<SubjectsModel> findSubjectsModelByNameIn(List<String> subjectsName);
 }

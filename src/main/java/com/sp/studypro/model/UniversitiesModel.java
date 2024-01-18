@@ -24,7 +24,6 @@ public class UniversitiesModel extends BaseModel {
     @Column(name = "total_clients", nullable = false)
     private Integer totalClients;
 
-
     @OneToMany(fetch = FetchType.EAGER)
     private List<ProgramsModel> programsModelList;
 

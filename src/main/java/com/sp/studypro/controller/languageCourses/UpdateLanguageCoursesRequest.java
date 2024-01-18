@@ -20,5 +20,4 @@ public class UpdateLanguageCoursesRequest {
     private Integer totalClients;
     private CountriesDto countries;
     private Intake intake;
-
 }

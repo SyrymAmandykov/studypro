@@ -29,7 +29,10 @@ public class ProgramsServiceImpl implements ProgramsService {
     @Override
     public ProgramsDto addNewPrograms(String title, String description, Double price,
                                       ProgramType programType, List<SubjectsDto> subjects) {
-        List<SubjectsModel> subjectsModels = subjectsRepository.findAllBySubjects(subjects);
+        List<SubjectsModel> subjectsModel = subjectsRepository.findSubjectsModelByNameIn(subjects
+                .stream()
+                .map(SubjectsDto::getName)
+                .toList());
 
         ProgramsModel programsModel = programsRepository.save(
                 new ProgramsModel(
@@ -37,7 +40,7 @@ public class ProgramsServiceImpl implements ProgramsService {
                         description,
                         price,
                         programType,
-                        subjectsModels
+                        subjectsModel
                 )
         );
 
@@ -80,7 +83,10 @@ public class ProgramsServiceImpl implements ProgramsService {
                                      ProgramType programType, List<SubjectsDto> subjects) {
         ProgramsModel upgradeProgramsModels = programsRepository.findById(id)
                 .orElseThrow();
-        List<SubjectsModel> upgradeSubjectsModels = subjectsRepository.findAllBySubjects(subjects);
+        List<SubjectsModel> upgradeSubjectsModels = subjectsRepository.findSubjectsModelByNameIn(subjects
+                .stream()
+                .map(SubjectsDto::getName)
+                .toList());
         if (upgradeSubjectsModels.isEmpty()) {
             throw new IllegalArgumentException("Subjects id not found");
         }
